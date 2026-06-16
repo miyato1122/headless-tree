@@ -1,47 +1,94 @@
-import { reactive } from "vue";
-
-/**
- * A GIS-style layer. Groups have `children`; leaf entries are concrete map layers
- * with a `kind` and an `opacity` (0-100).
- */
-export interface LayerNode {
+export type DemoItem = {
   name: string;
-  /** present on group nodes */
   children?: string[];
-  /** layer kind, only meaningful for leaf layers */
-  kind?: "raster" | "vector" | "basemap";
-  /** layer opacity in percent, only meaningful for leaf layers */
-  opacity?: number;
-}
+};
 
-/**
- * Reactive layer catalog. The tree's data loader reads from this object, so mutating it
- * (e.g. on drag-and-drop reorder) and rebuilding the tree reflects changes immediately.
- */
-export const layers: Record<string, LayerNode> = reactive({
-  root: { name: "Map", children: ["basemaps", "overlays"] },
+export const data: Record<string, DemoItem> = {
+  root: {
+    name: "Root",
+    children: ["fruit", "vegetables", "meals", "dessert", "drinks"],
+  },
+  fruit: {
+    name: "Fruit",
+    children: ["apple", "banana", "orange", "berries", "lemon"],
+  },
+  apple: { name: "Apple" },
+  banana: { name: "Banana" },
+  orange: { name: "Orange" },
+  lemon: { name: "Lemon" },
+  berries: { name: "Berries", children: ["red", "blue", "black"] },
+  red: { name: "Red", children: ["strawberry", "raspberry"] },
+  strawberry: { name: "Strawberry" },
+  raspberry: { name: "Raspberry" },
+  blue: { name: "Blue", children: ["blueberry"] },
+  blueberry: { name: "Blueberry" },
+  black: { name: "Black", children: ["blackberry"] },
+  blackberry: { name: "Blackberry" },
+  vegetables: {
+    name: "Vegetables",
+    children: ["tomato", "carrot", "cucumber", "potato"],
+  },
+  tomato: { name: "Tomato" },
+  carrot: { name: "Carrot" },
+  cucumber: { name: "Cucumber" },
+  potato: { name: "Potato" },
+  meals: {
+    name: "Meals",
+    children: ["america", "europe", "asia", "australia"],
+  },
+  america: { name: "America", children: ["burger", "hotdog", "pizza"] },
+  burger: { name: "Burger" },
+  hotdog: { name: "Hotdog" },
+  pizza: { name: "Pizza" },
+  europe: {
+    name: "Europe",
+    children: ["pasta", "paella", "schnitzel", "risotto", "weisswurst"],
+  },
+  pasta: { name: "Pasta" },
+  paella: { name: "Paella" },
+  schnitzel: { name: "Schnitzel" },
+  risotto: { name: "Risotto" },
+  weisswurst: { name: "Weisswurst" },
+  asia: { name: "Asia", children: ["sushi", "ramen", "curry", "noodles"] },
+  sushi: { name: "Sushi" },
+  ramen: { name: "Ramen" },
+  curry: { name: "Curry" },
+  noodles: { name: "Noodles" },
+  australia: {
+    name: "Australia",
+    children: ["potatowedges", "pokebowl", "lemoncurd", "kumarafries"],
+  },
+  potatowedges: { name: "Potato Wedges" },
+  pokebowl: { name: "Poke Bowl" },
+  lemoncurd: { name: "Lemon Curd" },
+  kumarafries: { name: "Kumara Fries" },
+  dessert: {
+    name: "Dessert",
+    children: ["icecream", "cake", "pudding", "cookies"],
+  },
+  icecream: { name: "Icecream" },
+  cake: { name: "Cake" },
+  pudding: { name: "Pudding" },
+  cookies: { name: "Cookies" },
+  drinks: { name: "Drinks", children: ["water", "juice", "beer", "wine"] },
+  water: { name: "Water" },
+  juice: { name: "Juice" },
+  beer: { name: "Beer" },
+  wine: { name: "Wine" },
+};
 
-  basemaps: { name: "Base maps", children: ["osm", "satellite", "terrain"] },
-  osm: { name: "OpenStreetMap", kind: "basemap", opacity: 100 },
-  satellite: { name: "Satellite", kind: "basemap", opacity: 100 },
-  terrain: { name: "Terrain", kind: "basemap", opacity: 100 },
+const wait = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
-  overlays: { name: "Overlays", children: ["boundaries", "transport", "poi"] },
+export const syncDataLoader = {
+  getItem: (id: string) => data[id],
+  getChildren: (id: string) => data[id]?.children ?? [],
+};
 
-  boundaries: { name: "Boundaries", children: ["countries", "regions"] },
-  countries: { name: "Countries", kind: "vector", opacity: 80 },
-  regions: { name: "Regions", kind: "vector", opacity: 60 },
-
-  transport: { name: "Transport", children: ["roads", "railways"] },
-  roads: { name: "Roads", kind: "vector", opacity: 90 },
-  railways: { name: "Railways", kind: "vector", opacity: 90 },
-
-  poi: { name: "Points of interest", children: ["restaurants", "hotels"] },
-  restaurants: { name: "Restaurants", kind: "vector", opacity: 100 },
-  hotels: { name: "Hotels", kind: "vector", opacity: 100 },
-});
-
-export const dataLoader = {
-  getItem: (id: string) => layers[id],
-  getChildren: (id: string) => layers[id]?.children ?? [],
+export const asyncDataLoader = {
+  getItem: (itemId: string) => wait(500).then(() => data[itemId]),
+  getChildren: (itemId: string) =>
+    wait(800).then(() => data[itemId]?.children ?? []),
 };
