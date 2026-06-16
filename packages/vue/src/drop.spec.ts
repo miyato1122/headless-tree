@@ -128,3 +128,67 @@ describe("DOM drag event wiring (Vue v-bind)", () => {
     expect(onDrop).toHaveBeenCalled();
   });
 });
+
+// A component using a separate drag handle (seperateDragHandle), where the handle —
+// not the row — carries the drag-start handlers via getDragHandleProps().
+const makeHandleComponent = (data: Record<string, Item>) =>
+  defineComponent({
+    setup() {
+      const tree = useTree<Item>(() => ({
+        rootItemId: "root",
+        getItemName: (item) => item.getItemData()?.name,
+        isItemFolder: (item) => !!item.getItemData()?.children,
+        dataLoader: {
+          getItem: (id: string) => data[id],
+          getChildren: (id: string) => data[id]?.children ?? [],
+        },
+        initialState: { expandedItems: ["a"] },
+        canReorder: true,
+        seperateDragHandle: true,
+        features: [
+          syncDataLoaderFeature,
+          selectionFeature,
+          hotkeysCoreFeature,
+          dragAndDropFeature,
+          keyboardDragAndDropFeature,
+        ],
+      }));
+      return { tree };
+    },
+    render() {
+      const tree = this.tree;
+      return h(
+        "div",
+        { ...tree.getContainerProps() },
+        tree.getItems().map((item) =>
+          h("div", { ...item.getProps(), key: item.getId(), "data-id": item.getId() }, [
+            h("span", {
+              ...item.getDragHandleProps(),
+              "data-handle": item.getId(),
+            }),
+            item.getItemName(),
+          ]),
+        ),
+      );
+    },
+  });
+
+describe("separate drag handle (getDragHandleProps)", () => {
+  it("normalizes the handle's drag events so dragstart sets draggedItems", async () => {
+    const data = makeData();
+    const wrapper = mount(makeHandleComponent(data));
+    await nextTick();
+    const tree = (wrapper.vm as any).tree;
+
+    const handle = wrapper
+      .findAll("span")
+      .find((s: any) => s.attributes("data-handle") === "a1");
+    expect(handle?.attributes("draggable")).toBe("true");
+
+    await handle!.trigger("dragstart", { dataTransfer: dataTransfer() });
+    const dragged = tree
+      .getState()
+      .dnd?.draggedItems?.map((i: any) => i.getId());
+    expect(dragged).toContain("a1");
+  });
+});

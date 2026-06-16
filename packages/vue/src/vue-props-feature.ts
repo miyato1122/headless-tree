@@ -66,5 +66,8 @@ export const vuePropsFeature: FeatureImplementation = {
     getCheckboxProps: ({ prev }) => adaptProps(prev?.() ?? {}),
     getRenameInputProps: ({ prev }) =>
       adaptProps(prev?.() ?? {}, { remapChangeToInput: true }),
+    // Needed when `seperateDragHandle` is enabled: the handle element carries the
+    // drag-start handlers, which must be normalized just like getProps().
+    getDragHandleProps: ({ prev }) => adaptProps(prev?.() ?? {}),
   },
 };
