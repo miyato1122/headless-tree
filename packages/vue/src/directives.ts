@@ -26,6 +26,33 @@ export const vHtElement: Directive<HTMLElement, Registerable | undefined> = {
 };
 
 /**
+ * Re-applies a function-style `ref` callback that `vuePropsFeature` strips out of the
+ * generated props. The bound function is called with the element on mount and with `null`
+ * on unmount, matching the contract of headless-tree's internal `ref` callbacks.
+ *
+ * Use this for the registration/focus callbacks that are not covered by `vHtElement`:
+ *
+ * ```html
+ * <!-- register the search input so keyboard navigation works -->
+ * <input v-bind="tree.getSearchInputElementProps()" v-ht-ref="tree.registerSearchInputElement" />
+ *
+ * <!-- autofocus a rename input on mount -->
+ * <input v-bind="item.getRenameInputProps()" v-ht-ref="(el) => el?.focus()" />
+ * ```
+ */
+export const vHtRef: Directive<
+  HTMLElement,
+  ((el: HTMLElement | null) => void) | undefined
+> = {
+  mounted(el, binding) {
+    binding.value?.(el);
+  },
+  beforeUnmount(el, binding) {
+    binding.value?.(null);
+  },
+};
+
+/**
  * Reflects the indeterminate (partially-checked) state onto a checkbox input. The native
  * `indeterminate` property cannot be set through an HTML attribute, so it needs to be
  * applied imperatively.
