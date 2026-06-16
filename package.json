@@ -8,7 +8,7 @@
     "examples/nextjs",
     "examples/react-compiler",
     "examples/nextjs-react-compiler",
-    "examples/vue-app"
+    "examples/vuejs"
   ],
   "scripts": {
     "lint": "eslint . --fix",

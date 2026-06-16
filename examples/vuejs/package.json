@@ -1,6 +1,6 @@
 {
-  "name": "@headless-tree/example-vue-app",
-  "description": "GIS layer-tree demo for the Headless Tree Vue 3 integration",
+  "name": "@headless-tree/example-vuejs",
+  "description": "Basic example of Headless Tree with Vue 3",
   "author": "Lukas Bach <npm@lukasbach.com>",
   "funding": "https://github.com/sponsors/lukasbach",
   "private": true,
