@@ -1,0 +1,64 @@
+{
+  "name": "@headless-tree/vue",
+  "description": "The definitive tree component for the Web - Vue 3 integration",
+  "keywords": [
+    "tree",
+    "component",
+    "web",
+    "headless",
+    "ui",
+    "vue",
+    "vue3",
+    "nested",
+    "async",
+    "checkbox",
+    "composable"
+  ],
+  "version": "1.6.3",
+  "main": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsup ./src/index.ts --format esm,cjs --dts",
+    "start": "tsup ./src/index.ts --format esm,cjs --dts --watch",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lukasbach/headless-tree.git",
+    "directory": "packages/vue"
+  },
+  "author": "Lukas Bach <npm@lukasbach.com>",
+  "funding": "https://github.com/sponsors/lukasbach",
+  "license": "MIT",
+  "devDependencies": {
+    "@headless-tree/core": "workspace:*",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.0.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.3",
+    "vue": "^3.5.13"
+  },
+  "peerDependencies": {
+    "@headless-tree/core": "*",
+    "vue": "^3.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "moduleResolution": "Bundler"
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./src/**/*.spec.ts"]
+}
