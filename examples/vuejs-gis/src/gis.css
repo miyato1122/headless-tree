@@ -1,0 +1,204 @@
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1e1f22;
+  background: #f4f5f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+}
+
+.app {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e3e5e8;
+  border-radius: 10px;
+  padding: 16px 18px;
+  width: 380px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+h1 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+h2 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.tree {
+  position: relative;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.row:hover {
+  background: #f0f1f3;
+}
+
+.row.focused {
+  outline: 2px solid #00aff4;
+  outline-offset: -2px;
+}
+
+.row.selected {
+  background: #e7f4ff;
+}
+
+.row.drop {
+  background: #d8f0ff;
+}
+
+.row.folder .label {
+  font-weight: 600;
+}
+
+.handle {
+  cursor: grab;
+  color: #b6bbc2;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.twisty {
+  width: 12px;
+  display: inline-flex;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 10px;
+}
+
+.twisty.spacer {
+  visibility: hidden;
+}
+
+.visibility {
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Legend swatches — drawn from the layer's `kind` + `color` (var --swatch). */
+.legend {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.legend--vector-fill {
+  background: var(--swatch);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+}
+
+.legend--vector-line {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--swatch);
+}
+
+.legend--vector-point {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--swatch);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.legend--basemap,
+.legend--raster {
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--swatch),
+    var(--swatch) 3px,
+    rgba(255, 255, 255, 0.45) 3px,
+    rgba(255, 255, 255, 0.45) 6px
+  );
+}
+
+.label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.opacity {
+  width: 72px;
+  flex: 0 0 auto;
+}
+
+.dragline {
+  height: 2px;
+  background: #00aff4;
+  position: absolute;
+  pointer-events: none;
+}
+
+.mapstate ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+}
+
+.mapstate li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.mapstate .opacityval {
+  margin-left: auto;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.mapstate .empty {
+  color: #9ca3af;
+}
