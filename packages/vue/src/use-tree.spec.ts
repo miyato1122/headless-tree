@@ -81,6 +81,29 @@ describe("useTree (Vue adapter)", () => {
     expect(ids).toEqual(["a", "b"]);
   });
 
+  it("re-renders in the new order after data changes + rebuildTree (drop path)", async () => {
+    const wrapper = mount(makeComponent());
+    await nextTick();
+
+    // sanity: children of "a" are in original order
+    expect(
+      wrapper.findAll("button").map((b) => b.attributes("data-id")),
+    ).toEqual(["a", "a1", "a2", "b"]);
+
+    // simulate what createOnDropHandler does on drop: mutate children, then rebuild.
+    // This is the exact reactivity path drag-and-drop relies on to reflect a reorder.
+    items.a.children = ["a2", "a1"];
+    (wrapper.vm as any).tree.rebuildTree();
+    await nextTick();
+
+    expect(
+      wrapper.findAll("button").map((b) => b.attributes("data-id")),
+    ).toEqual(["a", "a2", "a1", "b"]);
+
+    // restore for other tests
+    items.a.children = ["a1", "a2"];
+  });
+
   it("strips the React `ref` prop so v-bind stays clean", () => {
     const wrapper = mount(makeComponent());
     const treeInstance = (wrapper.vm as any).tree;
