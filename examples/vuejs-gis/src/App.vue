@@ -107,7 +107,7 @@ const setOpacity = (id: string, value: number) => {
           >
 
           <span v-if="item.isFolder()" class="twisty">{{
-            item.isExpanded() ? "▾" : "▸"
+            item.isExpanded() ? "▼" : "▶"
           }}</span>
           <span v-else class="twisty spacer" />
 

@@ -95,11 +95,20 @@ h2 {
 }
 
 .twisty {
-  width: 12px;
+  width: 18px;
+  height: 18px;
   display: inline-flex;
+  align-items: center;
   justify-content: center;
-  color: #6b7280;
-  font-size: 10px;
+  flex: 0 0 auto;
+  color: #4b5563;
+  font-size: 11px;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.row.folder:hover .twisty {
+  background: #e3e5e8;
 }
 
 .twisty.spacer {
